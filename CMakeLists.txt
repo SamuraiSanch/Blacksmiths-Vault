@@ -12,4 +12,4 @@ endif()
 project ("Blacksmiths Vault")
 
 # Включите подпроекты.
-add_subdirectory ("Blacksmiths Vault")
+add_subdirectory ("Blacksmiths-Vault")
