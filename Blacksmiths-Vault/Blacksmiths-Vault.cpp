@@ -4,8 +4,8 @@ using namespace std;
 
 int main()
 {
-	Database db;
-	db.tryRequest();
+	//Database db;
+	//db.tryRequest();
 	cout << "Hello CMake." << endl;
 	return 0;
 }

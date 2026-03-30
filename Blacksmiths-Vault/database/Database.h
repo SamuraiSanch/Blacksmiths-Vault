@@ -5,13 +5,27 @@
 
 class Database {
 private:
-    sqlite3* db;
-    char* errMsg = nullptr;
-    int rc;
-public:
+    sqlite3* m_db;
+    int m_rc;
+
     Database();
     ~Database();
-    void tryRequest();
+
+    void createSuppliersTable();
+    void createItemsTable();
+    void createCustomersTable();
+    void createOrdersTable();
+public:
+    static Database& getInstance() {
+        static Database instance;
+        return instance;
+    }
+
+    Database(const Database&) = delete;
+    Database& operator=(const Database&) = delete;
+
+    sqlite3* getConnection();
+    void initialize();
 };
 
 

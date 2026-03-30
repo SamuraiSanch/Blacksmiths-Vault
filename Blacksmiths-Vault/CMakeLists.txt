@@ -9,8 +9,6 @@ add_executable (CMakeTarget
     # Database
     database/Database.cpp
     database/Database.h
-    database/DatabaseManager.cpp
-    database/DatabaseManager.h
 
     # Models
     models/Customer.cpp
