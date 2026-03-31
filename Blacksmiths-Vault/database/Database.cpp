@@ -15,11 +15,11 @@ sqlite3* Database::getConnection() {
 }
 
 void Database::createCustomersTable() {
-    const char* createTable = "CREATE TABLE IF NOT EXISTS CUSTOMERS("
-        "ID INTEGER PRIMARY KEY,"
-        "NAME TEXT NOT NULL,"
-        "GUILD TEXT NOT NULL,"
-        "GOLD_BALANCE INT NOT NULL);";
+    const char* createTable = "CREATE TABLE IF NOT EXISTS customers("
+        "id INTEGER PRIMARY KEY,"
+        "name TEXT NOT NULL,"
+        "guild TEXT NOT NULL,"
+        "gold_balance REAL NOT NULL);";
 
     char* errMsg = nullptr;
 
@@ -31,12 +31,12 @@ void Database::createCustomersTable() {
     }
 }
 void Database::createSuppliersTable() {
-    const char* createTable = "CREATE TABLE IF NOT EXISTS SUPPLIERS("
-        "ID INTEGER PRIMARY KEY,"
-        "NAME TEXT NOT NULL,"
-        "ORIGIN TEXT NOT NULL,"
-        "CONTACT TEXT NOT NULL,"
-        "RELIABILITY_RATING INT NOT NULL);";
+    const char* createTable = "CREATE TABLE IF NOT EXISTS suppliers("
+        "id INTEGER PRIMARY KEY,"
+        "name TEXT NOT NULL,"
+        "origin TEXT NOT NULL,"
+        "contact TEXT NOT NULL,"
+        "reliability_rating INT NOT NULL);";
    
     char* errMsg = nullptr;
 
@@ -48,16 +48,16 @@ void Database::createSuppliersTable() {
     }
 }
 void Database::createItemsTable() {
-    const char* createTable = "CREATE TABLE IF NOT EXISTS ITEMS("
-        "ID INTEGER PRIMARY KEY,"
-        "NAME TEXT NOT NULL,"
-        "TYPE TEXT NOT NULL,"
-        "DAMAGE INT,"
-        "DURABILITY INT NOT NULL,"
-        "RARITY TEXT NOT NULL,"
-        "PRICE REAL NOT NULL,"
-        "STOCK INT NOT NULL,"
-        "SUPPLIER_ID INT REFERENCES SUPPLIERS(ID) NOT NULL);";
+    const char* createTable = "CREATE TABLE IF NOT EXISTS items("
+        "id INTEGER PRIMARY KEY,"
+        "name TEXT NOT NULL,"
+        "type TEXT NOT NULL,"
+        "damage INT,"
+        "durability INT NOT NULL,"
+        "rarity TEXT NOT NULL,"
+        "price REAL NOT NULL,"
+        "stock INT NOT NULL,"
+        "supplier_id INT REFERENCES suppliers(id) NOT NULL);";
 
     char* errMsg = nullptr;
 
@@ -69,14 +69,14 @@ void Database::createItemsTable() {
     }
 }
 void Database::createOrdersTable() {
-    const char* createTable = "CREATE TABLE IF NOT EXISTS ORDERS("
-        "ID INTEGER PRIMARY KEY,"
-        "CUSTOMER_ID INT REFERENCES CUSTOMERS(ID) NOT NULL,"
-        "ITEM_ID INT REFERENCES ITEMS(ID) NOT NULL,"
-        "QUANTITY INT NOT NULL,"
-        "TOTAL_PRICE REAL NOT NULL,"
-        "STATUS TEXT NOT NULL,"
-        "ORDER_DATE TEXT NOT NULL);";
+    const char* createTable = "CREATE TABLE IF NOT EXISTS orders("
+        "id INTEGER PRIMARY KEY,"
+        "customer_id INT REFERENCES customers(id) NOT NULL,"
+        "item_id INT REFERENCES items(id) NOT NULL,"
+        "quantity INT NOT NULL,"
+        "total_price REAL NOT NULL,"
+        "status TEXT NOT NULL,"
+        "order_date TEXT NOT NULL);";
 
     char* errMsg = nullptr;
 
