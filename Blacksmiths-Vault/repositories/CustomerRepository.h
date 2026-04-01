@@ -1,7 +1,6 @@
 #ifndef CUSTOMERREPOSITORY_H
 #define CUSTOMERREPOSITORY_H
 #include <Customer.h>
-#include <sqlite3.h>
 #include <vector>
 #include <Database.h>
 

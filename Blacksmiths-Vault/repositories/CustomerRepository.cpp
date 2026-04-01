@@ -12,12 +12,12 @@ std::vector<Customer> CustomerRepository::getAll() {
 
     std::vector<Customer> result;
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-        Customer c;
-        c.setId(sqlite3_column_int(stmt, 0));
-        c.setName(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
-        c.setGuild(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
-        c.setGoldBalance(sqlite3_column_double(stmt, 3));
-        result.push_back(c);
+        Customer customer;
+        customer.setId(sqlite3_column_int(stmt, 0));
+        customer.setName(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+        customer.setGuild(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
+        customer.setGoldBalance(sqlite3_column_double(stmt, 3));
+        result.push_back(customer);
     }
 
     sqlite3_finalize(stmt);
@@ -112,12 +112,12 @@ std::vector<Customer> CustomerRepository::filterByGuild(const std::string& guild
 
     std::vector<Customer> result;
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-        Customer c;
-        c.setId(sqlite3_column_int(stmt, 0));
-        c.setName(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
-        c.setGuild(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
-        c.setGoldBalance(sqlite3_column_double(stmt, 3));
-        result.push_back(c);
+        Customer customer;
+        customer.setId(sqlite3_column_int(stmt, 0));
+        customer.setName(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+        customer.setGuild(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
+        customer.setGoldBalance(sqlite3_column_double(stmt, 3));
+        result.push_back(customer);
     }
 
     sqlite3_finalize(stmt);
