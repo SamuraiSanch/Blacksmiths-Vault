@@ -1,8 +1,8 @@
 #ifndef CUSTOMERREPOSITORY_H
 #define CUSTOMERREPOSITORY_H
-#include <Customer.h>
+#include "Customer.h"
 #include <vector>
-#include <Database.h>
+#include "Database.h"
 
 class CustomerRepository {
 private:

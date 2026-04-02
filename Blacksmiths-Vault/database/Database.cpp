@@ -16,7 +16,7 @@ sqlite3* Database::getConnection() {
 
 void Database::createCustomersTable() {
     const char* createTable = "CREATE TABLE IF NOT EXISTS customers("
-        "id INTEGER PRIMARY KEY,"
+        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
         "name TEXT NOT NULL,"
         "guild TEXT NOT NULL,"
         "gold_balance REAL NOT NULL);";
@@ -32,7 +32,7 @@ void Database::createCustomersTable() {
 }
 void Database::createSuppliersTable() {
     const char* createTable = "CREATE TABLE IF NOT EXISTS suppliers("
-        "id INTEGER PRIMARY KEY,"
+        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
         "name TEXT NOT NULL,"
         "origin TEXT NOT NULL,"
         "contact TEXT NOT NULL,"
@@ -49,7 +49,7 @@ void Database::createSuppliersTable() {
 }
 void Database::createItemsTable() {
     const char* createTable = "CREATE TABLE IF NOT EXISTS items("
-        "id INTEGER PRIMARY KEY,"
+        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
         "name TEXT NOT NULL,"
         "type TEXT NOT NULL,"
         "damage INT,"
@@ -70,7 +70,7 @@ void Database::createItemsTable() {
 }
 void Database::createOrdersTable() {
     const char* createTable = "CREATE TABLE IF NOT EXISTS orders("
-        "id INTEGER PRIMARY KEY,"
+        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
         "customer_id INT REFERENCES customers(id) NOT NULL,"
         "item_id INT REFERENCES items(id) NOT NULL,"
         "quantity INT NOT NULL,"

@@ -1,7 +1,7 @@
 #ifndef SUPPLIERREPOSITORY_H
 #define SUPPLIERREPOSITORY_H
-#include <Supplier.h>
-#include <Database.h>
+#include "Supplier.h"
+#include "Database.h"
 #include <iostream>
 #include <vector>
 class SupplierRepository {

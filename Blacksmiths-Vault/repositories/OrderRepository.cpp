@@ -51,6 +51,7 @@ Order OrderRepository::getById(const int id) {
     sqlite3_finalize(stmt);
     return order;
 }
+/*
 void OrderRepository::add(const Order& order) {
     sqlite3* db = Database::getInstance().getConnection();
 
@@ -70,6 +71,41 @@ void OrderRepository::add(const Order& order) {
 
     sqlite3_step(stmt);
     sqlite3_finalize(stmt);
+}
+*/
+void OrderRepository::add(const Order& order) {
+    sqlite3* db = Database::getInstance().getConnection();
+
+    sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
+
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, "INSERT INTO orders (customer_id, item_id, quantity, total_price, status, order_date) VALUES (?, ?, ?, ?, ?, ?)", -1, &stmt, nullptr);
+    sqlite3_bind_int(stmt, 1, order.getCustomerId());
+    sqlite3_bind_int(stmt, 2, order.getItemId());
+    sqlite3_bind_int(stmt, 3, order.getQuantity());
+    sqlite3_bind_double(stmt, 4, order.getTotalPrice());
+    sqlite3_bind_text(stmt, 5, order.getStatus().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 6, order.getOrderDate().c_str(), -1, SQLITE_STATIC);
+
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        sqlite3_exec(db, "ROLLBACK", nullptr, nullptr, nullptr);
+        return;
+    }
+    sqlite3_finalize(stmt);
+
+    sqlite3_prepare_v2(db, "UPDATE items SET stock = stock - ? WHERE id = ?", -1, &stmt, nullptr);
+    sqlite3_bind_int(stmt, 1, order.getQuantity());
+    sqlite3_bind_int(stmt, 2, order.getItemId());
+
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        sqlite3_exec(db, "ROLLBACK", nullptr, nullptr, nullptr);
+        return;
+    }
+    sqlite3_finalize(stmt);
+
+    sqlite3_exec(db, "COMMIT", nullptr, nullptr, nullptr);
 }
 void OrderRepository::update(const Order& order) {
     sqlite3* db = Database::getInstance().getConnection();
@@ -105,6 +141,42 @@ void OrderRepository::remove(const int id) {
 
     sqlite3_step(stmt);
     sqlite3_finalize(stmt);
+}
+void OrderRepository::cancel(const int id) {
+    sqlite3* db = Database::getInstance().getConnection();
+    sqlite3_exec(db, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
+
+    Order order = getById(id);
+
+    if (order.getId() == 0) {
+        sqlite3_exec(db, "ROLLBACK", nullptr, nullptr, nullptr);
+        std::cerr << "Order not found" << std::endl;
+        return;
+    }
+
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, "UPDATE items SET stock = stock + ? WHERE id = ?", -1, &stmt, nullptr);
+    sqlite3_bind_int(stmt, 1, order.getQuantity());
+    sqlite3_bind_int(stmt, 2, order.getItemId());
+
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        sqlite3_exec(db, "ROLLBACK", nullptr, nullptr, nullptr);
+        return;
+    }
+    sqlite3_finalize(stmt);
+
+    sqlite3_prepare_v2(db, "UPDATE orders SET status = 'cancelled' WHERE id = ?", -1, &stmt, nullptr);
+    sqlite3_bind_int(stmt, 1, id);
+
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        sqlite3_exec(db, "ROLLBACK", nullptr, nullptr, nullptr);
+        return;
+    }
+    sqlite3_finalize(stmt);
+
+    sqlite3_exec(db, "COMMIT", nullptr, nullptr, nullptr);
 }
 std::vector<Order> OrderRepository::filterByStatus(const std::string& status) {
     sqlite3* db = Database::getInstance().getConnection();
