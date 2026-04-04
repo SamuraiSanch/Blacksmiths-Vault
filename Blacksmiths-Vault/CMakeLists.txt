@@ -37,7 +37,7 @@ add_executable (CMakeTarget
     # SQLite
     sqlite/sqlite3.c
     sqlite/sqlite3.h
-)
+ "ui/InputHelper.h")
 
 target_include_directories(CMakeTarget PRIVATE
     sqlite

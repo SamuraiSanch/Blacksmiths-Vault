@@ -28,5 +28,8 @@ public:
     void setOrderDate(const std::string& orderDate);
 };
 
+std::ostream& operator<< (std::ostream& out, const Order& order);
+std::istream& operator>> (std::istream& in, Order& order);
+
 #endif
 

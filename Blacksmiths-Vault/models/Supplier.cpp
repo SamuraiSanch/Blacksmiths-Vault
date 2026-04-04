@@ -1,4 +1,5 @@
 #include "Supplier.h"
+#include "InputHelper.h"
 
 int Supplier::getId() const {
     return m_id;
@@ -29,4 +30,15 @@ void Supplier::setContact(const std::string& contact) {
 }
 void Supplier::setReliabilityRating(const int rating) {
     m_reliability_rating = rating;
+}
+std::ostream& operator<< (std::ostream& out, const Supplier& supplier) {
+    out << supplier.getId() << ": " << supplier.getName() << " | " << supplier.getOrigin() << " | " << supplier.getContact() << " | " << supplier.getReliabilityRating() << '\n';
+    return out;
+}
+std::istream& operator>> (std::istream& in, Supplier& supplier) {
+    supplier.setName(getString("Enter supplier name: "));
+    supplier.setOrigin(getString("Enter supplier origin: "));
+    supplier.setContact(getString("Enter supplier contact: "));
+    supplier.setReliabilityRating(getInput<int>("Enter supplier reliability rating: "));
+    return in;
 }

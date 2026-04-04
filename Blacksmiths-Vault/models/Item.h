@@ -1,13 +1,13 @@
 #ifndef ITEM_H
 #define ITEM_H
 #include <iostream>
-
+#include <string>
 class Item {
 private:
     int m_id;
     std::string m_name;
     std::string m_type;
-    int m_dagame;
+    int m_damage;
     int m_durability;
     std::string m_rarity;
     double m_price;
@@ -33,4 +33,8 @@ public:
     void setStock(const int stock);
     void setSupplierId(const int supplierId);
 };
+
+std::ostream& operator<< (std::ostream& out, const Item& item);
+std::istream& operator>> (std::istream& in, Item& item);
+
 #endif

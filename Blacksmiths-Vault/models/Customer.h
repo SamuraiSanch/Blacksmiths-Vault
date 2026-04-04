@@ -16,9 +16,11 @@ public:
     void setId(const int id);
     void setName(const std::string& name);
     void setGuild(const std::string& guild);
-    double setGoldBalance(const double gold_balance);
+    void setGoldBalance(const double gold_balance);
 };
 
+std::ostream& operator<< (std::ostream& out, const Customer& customer);
+std::istream& operator>> (std::istream& in, Customer& customer);
 
 #endif
 

@@ -1,4 +1,5 @@
 #include "Order.h"
+#include "InputHelper.h"
 
 int Order::getId() const {
     return m_id;
@@ -41,4 +42,17 @@ void Order::setStatus(const std::string& status) {
 }
 void Order::setOrderDate(const std::string& orderDate) {
     m_order_date = orderDate;
+}
+std::ostream& operator<< (std::ostream& out, const Order& order) {
+    out << order.getId() << ": " << order.getCustomerId() << " | " << order.getItemId() << " | " << order.getQuantity() << " | " << order.getTotalPrice() << " | " << order.getStatus() << " | " << order.getOrderDate() << '\n';
+    return out;
+}
+std::istream& operator>> (std::istream& in, Order& order) {
+    order.setCustomerId(getInput<int>("Enter customer ID: "));
+    order.setItemId(getInput<int>("Enter item ID: "));
+    order.setQuantity(getInput<int>("Enter quantity: "));
+    order.setTotalPrice(getInput<double>("Enter total price: "));
+    order.setStatus(getString("Enter status: "));
+    order.setOrderDate(getString("Enter order date: "));
+    return in;
 }

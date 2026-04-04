@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include "InputHelper.h"
 
 short chooseOption(const short min, const short max) {
     short answer;
@@ -56,7 +57,70 @@ void Menu::processResponse(const short option) {
     }
 }
 void Menu::processItemsResponse(const short option) {
+    switch (option) {
+    case 1: {
+        std::vector<Item> allItems = i.getAll();
+        for (const auto& item : allItems)
+            std::cout << item;
+        break;
+    }
+    case 2: {
+        Item newItem;
+        std::cin >> newItem;
+        i.add(newItem);
+        std::cout << "Item added successfully!\n";
+        break;
+    }
+    case 3: {
+        int updateId = getInput<int>("Enter item ID to update: ");
+        Item updateItem = i.getById(updateId);
+        if (updateItem.getId() == 0) {
+            std::cerr << "Item not found!\n";
+            break;
+        }
+        std::cout << "Current item: \n" << updateItem << '\n';
+        std::cout << "Enter new data:\n";
+        std::cin >> updateItem;
 
+        i.update(updateItem);
+        std::cout << "Item updated successfully!\n";
+        break;
+    }
+    case 4: {
+        int removeId = getInput<int>("Enter item ID to delete: ");
+        Item removeItem = i.getById(removeId);
+        if (removeItem.getId() == 0) {
+            std::cerr << "Item not found!\n";
+            break;
+        }
+        std::cout << "Current item:\n" << removeItem << '\n';
+        i.remove(removeId);
+        std::cout << "Item deleted successfully!\n";
+        break;
+    }
+    case 5: {
+        std::string rarityToSort = getString("Enter rarity to filter by: ");
+        std::vector<Item> itemsWithInputRarity = i.filterByRarity(rarityToSort);
+        if (itemsWithInputRarity.empty()) {
+            std::cerr << "Incorrect rarity. Items with that rarity not found.\n";
+            break;
+        }
+        for (const auto& item : itemsWithInputRarity)
+            std::cout << item;
+        break;
+    }
+    case 6: {
+        std::string typeToSort = getString("Enter type to filter by: ");
+        std::vector<Item> itemsWithInputType = i.filterByType(typeToSort);
+        if (itemsWithInputType.empty()) {
+            std::cerr << "Incorrect type. Items with that type not found.\n";
+            break;
+        }
+        for (const auto& item : itemsWithInputType)
+            std::cout << item;
+        break;
+    }
+    }
 }
 void Menu::processOrdersResponse(const short option) {
 

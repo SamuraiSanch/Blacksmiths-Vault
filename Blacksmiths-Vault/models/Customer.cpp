@@ -1,4 +1,5 @@
 #include "Customer.h"
+#include "InputHelper.h"
 
 int Customer::getId() const {
     return m_id;
@@ -23,4 +24,14 @@ void Customer::setGuild(const std::string& guild) {
 }
 void Customer::setGoldBalance(const double gold_balance) {
     m_gold_balance = gold_balance;
+}
+std::ostream& operator<< (std::ostream& out, const Customer& customer) {
+    out << customer.getId() << ": " << customer.getName() << " | " << customer.getGuild() << " | " << customer.getGoldBalance() << '\n';
+    return out;
+}
+std::istream& operator>> (std::istream& in, Customer& customer) {
+    customer.setName(getString("Enter customer name: "));
+    customer.setGuild(getString("Enter customer guild: "));
+    customer.setGoldBalance(getInput<double>("Enter customer gold balance: "));
+    return in;
 }

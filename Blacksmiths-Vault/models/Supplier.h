@@ -22,5 +22,7 @@ public:
     void setReliabilityRating(const int rating);
 };
 
+std::ostream& operator<< (std::ostream& out, const Supplier& supplier);
+std::istream& operator>> (std::istream& in, Supplier& supplier);
 
 #endif

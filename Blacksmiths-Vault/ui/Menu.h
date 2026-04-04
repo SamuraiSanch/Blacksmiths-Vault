@@ -7,6 +7,10 @@
 
 class Menu {
 private:
+    CustomerRepository c;
+    ItemRepository i;
+    OrderRepository o;
+    SupplierRepository s;
     void processResponse(const short option);
     void processItemsResponse(const short option);
     void processOrdersResponse(const short option);
