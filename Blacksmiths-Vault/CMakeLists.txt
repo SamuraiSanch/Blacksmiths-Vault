@@ -31,6 +31,7 @@ add_executable (CMakeTarget
     repositories/SupplierRepository.h
 
     # UI
+    ui/InputHelper.h
     ui/Menu.cpp
     ui/Menu.h
 
