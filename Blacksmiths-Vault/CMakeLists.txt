@@ -1,11 +1,6 @@
-﻿# CMakeList.txt: проект CMake для Blacksmiths Vault; включите исходный код и определения,
-# укажите здесь логику для конкретного проекта.
-#
-# Добавьте источник в исполняемый файл этого проекта.
-add_executable (CMakeTarget
+﻿add_executable (CMakeTarget
     "Blacksmiths-Vault.cpp"
-    "Blacksmiths-Vault.h"
-
+    
     # Database
     database/Database.cpp
     database/Database.h
@@ -29,6 +24,8 @@ add_executable (CMakeTarget
     repositories/OrderRepository.h
     repositories/SupplierRepository.cpp
     repositories/SupplierRepository.h
+    repositories/StatisticsRepository.cpp
+    repositories/StatisticsRepository.h
 
     # UI
     ui/InputHelper.h
@@ -38,7 +35,7 @@ add_executable (CMakeTarget
     # SQLite
     sqlite/sqlite3.c
     sqlite/sqlite3.h
- "ui/InputHelper.h")
+)
 
 target_include_directories(CMakeTarget PRIVATE
     sqlite
@@ -51,5 +48,3 @@ target_include_directories(CMakeTarget PRIVATE
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET CMakeTarget PROPERTY CXX_STANDARD 20)
 endif()
-
-# TODO: Добавьте тесты и целевые объекты, если это необходимо.

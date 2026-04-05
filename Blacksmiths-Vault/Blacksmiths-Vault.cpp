@@ -1,11 +1,12 @@
-﻿#include "Blacksmiths-Vault.h"
-#include "Database.h"
+﻿#include "Database.h"
+#include "Menu.h"
+
 using namespace std;
 
 int main()
 {
-	//Database db;
-	//db.tryRequest();
-	cout << "Hello CMake." << endl;
+	Database::getInstance().initialize();
+	Menu menu;
+	menu.startMenu();
 	return 0;
 }

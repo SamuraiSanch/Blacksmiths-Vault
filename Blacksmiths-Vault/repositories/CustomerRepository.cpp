@@ -56,8 +56,8 @@ void CustomerRepository::add(const Customer& customer) {
         std::cerr << "SQL error: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
-    sqlite3_bind_text(stmt, 1, customer.getName().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, customer.getGuild().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, customer.getName().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, customer.getGuild().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_double(stmt, 3, customer.getGoldBalance());
 
     sqlite3_step(stmt);
@@ -74,8 +74,8 @@ void CustomerRepository::update(const Customer& customer) {
         return;
     }
 
-    sqlite3_bind_text(stmt, 1, customer.getName().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, customer.getGuild().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, customer.getName().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, customer.getGuild().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_double(stmt, 3, customer.getGoldBalance());
     sqlite3_bind_int(stmt, 4, customer.getId());
 
@@ -108,7 +108,7 @@ std::vector<Customer> CustomerRepository::filterByGuild(const std::string& guild
         std::cerr << "SQL error: " << sqlite3_errmsg(db) << std::endl;
         return {};
     }
-    sqlite3_bind_text(stmt, 1, guild.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, guild.c_str(), -1, SQLITE_TRANSIENT);
 
     std::vector<Customer> result;
     while (sqlite3_step(stmt) == SQLITE_ROW) {

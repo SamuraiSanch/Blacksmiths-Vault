@@ -36,6 +36,7 @@ std::ostream& operator<< (std::ostream& out, const Supplier& supplier) {
     return out;
 }
 std::istream& operator>> (std::istream& in, Supplier& supplier) {
+    in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     supplier.setName(getString("Enter supplier name: "));
     supplier.setOrigin(getString("Enter supplier origin: "));
     supplier.setContact(getString("Enter supplier contact: "));

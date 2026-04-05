@@ -48,6 +48,7 @@ std::ostream& operator<< (std::ostream& out, const Order& order) {
     return out;
 }
 std::istream& operator>> (std::istream& in, Order& order) {
+    in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     order.setCustomerId(getInput<int>("Enter customer ID: "));
     order.setItemId(getInput<int>("Enter item ID: "));
     order.setQuantity(getInput<int>("Enter quantity: "));

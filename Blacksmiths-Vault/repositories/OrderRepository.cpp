@@ -66,8 +66,8 @@ void OrderRepository::add(const Order& order) {
     sqlite3_bind_int(stmt, 2, order.getItemId());
     sqlite3_bind_int(stmt, 3, order.getQuantity());
     sqlite3_bind_double(stmt, 4, order.getTotalPrice());
-    sqlite3_bind_text(stmt, 5, order.getStatus().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 6, order.getOrderDate().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 5, order.getStatus().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 6, order.getOrderDate().c_str(), -1, SQLITE_TRANSIENT);
 
     sqlite3_step(stmt);
     sqlite3_finalize(stmt);
@@ -84,8 +84,8 @@ void OrderRepository::add(const Order& order) {
     sqlite3_bind_int(stmt, 2, order.getItemId());
     sqlite3_bind_int(stmt, 3, order.getQuantity());
     sqlite3_bind_double(stmt, 4, order.getTotalPrice());
-    sqlite3_bind_text(stmt, 5, order.getStatus().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 6, order.getOrderDate().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 5, order.getStatus().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 6, order.getOrderDate().c_str(), -1, SQLITE_TRANSIENT);
 
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         sqlite3_finalize(stmt);
@@ -120,8 +120,8 @@ void OrderRepository::update(const Order& order) {
     sqlite3_bind_int(stmt, 2, order.getItemId());
     sqlite3_bind_int(stmt, 3, order.getQuantity());
     sqlite3_bind_double(stmt, 4, order.getTotalPrice());
-    sqlite3_bind_text(stmt, 5, order.getStatus().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 6, order.getOrderDate().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 5, order.getStatus().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 6, order.getOrderDate().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 7, order.getId());
 
     sqlite3_step(stmt);
@@ -187,7 +187,7 @@ std::vector<Order> OrderRepository::filterByStatus(const std::string& status) {
         std::cerr << "SQL error: " << sqlite3_errmsg(db) << std::endl;
         return {};
     }
-    sqlite3_bind_text(stmt, 1, status.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, status.c_str(), -1, SQLITE_TRANSIENT);
 
     std::vector<Order> result;
     while (sqlite3_step(stmt) == SQLITE_ROW) {

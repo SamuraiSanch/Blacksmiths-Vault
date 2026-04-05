@@ -60,6 +60,7 @@ std::ostream& operator<< (std::ostream& out, const Item& item) {
     return out;
 }
 std::istream& operator>> (std::istream& in, Item& item) {
+    in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     item.setName(getString("Enter item name: "));
     item.setType(getString("Enter item type: "));
     item.setDamage(getInput<int>("Enter item damage: "));

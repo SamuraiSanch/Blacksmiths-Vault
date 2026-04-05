@@ -4,7 +4,7 @@
 
 class Supplier {
 private:
-    int m_id;
+    int m_id = 0;
     std::string m_name;
     std::string m_origin;
     std::string m_contact;

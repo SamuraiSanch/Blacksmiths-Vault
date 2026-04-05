@@ -19,9 +19,11 @@ T getInput(const std::string& prompt) {
         }
     }
 }
-std::string getString(const std::string& prompt) {
+inline std::string getString(const std::string& prompt) {
     std::string value;
     std::cout << prompt;
+    if (std::cin.peek() == '\n')
+        std::cin.ignore();
     std::getline(std::cin, value);
     return value;
 }

@@ -56,9 +56,9 @@ void SupplierRepository::add(const Supplier& supplier) {
         std::cerr << "SQL error: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
-    sqlite3_bind_text(stmt, 1, supplier.getName().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, supplier.getOrigin().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, supplier.getContact().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, supplier.getName().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, supplier.getOrigin().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, supplier.getContact().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 4, supplier.getReliabilityRating());
 
     sqlite3_step(stmt);
@@ -73,9 +73,9 @@ void SupplierRepository::update(const Supplier& supplier) {
         std::cerr << "SQL error: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
-    sqlite3_bind_text(stmt, 1, supplier.getName().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, supplier.getOrigin().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, supplier.getContact().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, supplier.getName().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, supplier.getOrigin().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, supplier.getContact().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 4, supplier.getReliabilityRating());
     sqlite3_bind_int(stmt, 5, supplier.getId());
 
@@ -106,7 +106,7 @@ std::vector<Supplier> SupplierRepository::filterByOrigin(const std::string& orig
         std::cerr << "SQL error: " << sqlite3_errmsg(db) << std::endl;
         return {};
     }
-    sqlite3_bind_text(stmt, 1, origin.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, origin.c_str(), -1, SQLITE_TRANSIENT);
 
     std::vector<Supplier> result;
     while (sqlite3_step(stmt) == SQLITE_ROW) {

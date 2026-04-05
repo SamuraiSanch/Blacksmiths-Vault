@@ -4,7 +4,7 @@
 
 class Order {
 private:
-    int m_id;
+    int m_id = 0;
     int m_customer_id;
     int m_item_id;
     int m_quantity;

@@ -4,6 +4,7 @@
 #include <ItemRepository.h>
 #include <OrderRepository.h>
 #include <SupplierRepository.h>
+#include "StatisticsRepository.h"
 
 class Menu {
 private:
@@ -11,6 +12,7 @@ private:
     ItemRepository i;
     OrderRepository o;
     SupplierRepository s;
+    StatisticsRepository stats;
     void processResponse(const short option);
     void processItemsResponse(const short option);
     void processOrdersResponse(const short option);

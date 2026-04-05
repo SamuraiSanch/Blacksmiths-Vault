@@ -30,6 +30,7 @@ std::ostream& operator<< (std::ostream& out, const Customer& customer) {
     return out;
 }
 std::istream& operator>> (std::istream& in, Customer& customer) {
+    in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     customer.setName(getString("Enter customer name: "));
     customer.setGuild(getString("Enter customer guild: "));
     customer.setGoldBalance(getInput<double>("Enter customer gold balance: "));

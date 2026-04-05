@@ -65,11 +65,11 @@ void ItemRepository::add(const Item& item) {
         std::cerr << "SQL error: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
-    sqlite3_bind_text(stmt, 1, item.getName().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, item.getType().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, item.getName().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, item.getType().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 3, item.getDamage());
     sqlite3_bind_int(stmt, 4, item.getDurability());
-    sqlite3_bind_text(stmt, 5, item.getRarity().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 5, item.getRarity().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_double(stmt, 6, item.getPrice());
     sqlite3_bind_int(stmt, 7, item.getStock());
     sqlite3_bind_int(stmt, 8, item.getSupplierId());
@@ -86,11 +86,11 @@ void ItemRepository::update(const Item& item) {
         std::cerr << "SQL error: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
-    sqlite3_bind_text(stmt, 1, item.getName().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, item.getType().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, item.getName().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, item.getType().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 3, item.getDamage());
     sqlite3_bind_int(stmt, 4, item.getDurability());
-    sqlite3_bind_text(stmt, 5, item.getRarity().c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 5, item.getRarity().c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_double(stmt, 6, item.getPrice());
     sqlite3_bind_int(stmt, 7, item.getStock());
     sqlite3_bind_int(stmt, 8, item.getSupplierId());
@@ -123,7 +123,7 @@ std::vector<Item> ItemRepository::filterByRarity(const std::string& rarity) {
         std::cerr << "SQL error: " << sqlite3_errmsg(db) << std::endl;
         return {};
     }
-    sqlite3_bind_text(stmt, 1, rarity.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, rarity.c_str(), -1, SQLITE_TRANSIENT);
 
     std::vector<Item> result;
     while (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -152,7 +152,7 @@ std::vector<Item> ItemRepository::filterByType(const std::string& type) {
         std::cerr << "SQL error: " << sqlite3_errmsg(db) << std::endl;
         return {};
     }
-    sqlite3_bind_text(stmt, 1, type.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, type.c_str(), -1, SQLITE_TRANSIENT);
 
     std::vector<Item> result;
     while (sqlite3_step(stmt) == SQLITE_ROW) {

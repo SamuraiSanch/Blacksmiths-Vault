@@ -4,7 +4,7 @@
 #include <string>
 class Item {
 private:
-    int m_id;
+    int m_id = 0;
     std::string m_name;
     std::string m_type;
     int m_damage;
