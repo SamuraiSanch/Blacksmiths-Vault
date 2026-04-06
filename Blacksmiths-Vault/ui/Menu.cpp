@@ -133,6 +133,10 @@ void Menu::processOrdersResponse(const short option) {
     case 2: {
         Order newOrder;
         std::cin >> newOrder;
+        if (newOrder.getCustomerId() == 0) {
+            std::cerr << "Order cancelled.\n";
+            break;
+        }
         o.add(newOrder);
         std::cout << "Order added successfully!\n";
         break;
@@ -145,9 +149,22 @@ void Menu::processOrdersResponse(const short option) {
             break;
         }
         std::cout << "Current order: \n" << updateOrder << '\n';
-        std::cout << "Enter new data:\n";
-        std::cin >> updateOrder;
 
+        char whatToUpdate = ' ';
+        while (true) {
+            whatToUpdate = getInput<char>("Do you want to update only order status? (y/n): ");
+            if (whatToUpdate != 'y' && whatToUpdate != 'Y' && whatToUpdate != 'n' && whatToUpdate != 'N')
+                std::cerr << "Incorrect answer. Please enter 'y' or 'n'.\n";
+            else break;
+        }
+        if (whatToUpdate == 'y' || whatToUpdate == 'Y') {
+            std::string newStatus = getString("Enter new status: ");
+            updateOrder.setStatus(newStatus);
+        }
+        else if (whatToUpdate == 'n' || whatToUpdate == 'N') {
+            std::cout << "Enter new data:\n";
+            std::cin >> updateOrder;
+        }
         o.update(updateOrder);
         std::cout << "Order updated successfully!\n";
         break;

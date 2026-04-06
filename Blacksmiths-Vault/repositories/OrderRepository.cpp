@@ -51,28 +51,6 @@ Order OrderRepository::getById(const int id) {
     sqlite3_finalize(stmt);
     return order;
 }
-/*
-void OrderRepository::add(const Order& order) {
-    sqlite3* db = Database::getInstance().getConnection();
-
-    sqlite3_stmt* stmt;
-
-    if (sqlite3_prepare_v2(db, "INSERT INTO orders (customer_id, item_id, quantity, total_price, status, order_date) VALUES (?, ?, ?, ?, ?, ?)", -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "SQL error: " << sqlite3_errmsg(db) << std::endl;
-        return;
-    }
-
-    sqlite3_bind_int(stmt, 1, order.getCustomerId());
-    sqlite3_bind_int(stmt, 2, order.getItemId());
-    sqlite3_bind_int(stmt, 3, order.getQuantity());
-    sqlite3_bind_double(stmt, 4, order.getTotalPrice());
-    sqlite3_bind_text(stmt, 5, order.getStatus().c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 6, order.getOrderDate().c_str(), -1, SQLITE_TRANSIENT);
-
-    sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-}
-*/
 void OrderRepository::add(const Order& order) {
     sqlite3* db = Database::getInstance().getConnection();
 
@@ -97,6 +75,17 @@ void OrderRepository::add(const Order& order) {
     sqlite3_prepare_v2(db, "UPDATE items SET stock = stock - ? WHERE id = ?", -1, &stmt, nullptr);
     sqlite3_bind_int(stmt, 1, order.getQuantity());
     sqlite3_bind_int(stmt, 2, order.getItemId());
+
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        sqlite3_exec(db, "ROLLBACK", nullptr, nullptr, nullptr);
+        return;
+    }
+    sqlite3_finalize(stmt);
+
+    sqlite3_prepare_v2(db, "UPDATE customers SET gold_balance = gold_balance - ? WHERE id = ?", -1, &stmt, nullptr);
+    sqlite3_bind_double(stmt, 1, order.getTotalPrice());
+    sqlite3_bind_int(stmt, 2, order.getCustomerId());
 
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         sqlite3_finalize(stmt);
@@ -158,6 +147,17 @@ void OrderRepository::cancel(const int id) {
     sqlite3_prepare_v2(db, "UPDATE items SET stock = stock + ? WHERE id = ?", -1, &stmt, nullptr);
     sqlite3_bind_int(stmt, 1, order.getQuantity());
     sqlite3_bind_int(stmt, 2, order.getItemId());
+
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        sqlite3_exec(db, "ROLLBACK", nullptr, nullptr, nullptr);
+        return;
+    }
+    sqlite3_finalize(stmt);
+
+    sqlite3_prepare_v2(db, "UPDATE customers SET gold_balance = gold_balance + ? WHERE id = ?", -1, &stmt, nullptr);
+    sqlite3_bind_double(stmt, 1, order.getTotalPrice());
+    sqlite3_bind_int(stmt, 2, order.getCustomerId());
 
     if (sqlite3_step(stmt) != SQLITE_DONE) {
         sqlite3_finalize(stmt);

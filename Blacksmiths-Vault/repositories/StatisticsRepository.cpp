@@ -32,7 +32,7 @@ void StatisticsRepository::printTop5Items() {
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         std::string name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
         int count = sqlite3_column_int(stmt, 1);
-        std::cout << rank++ << ". " << name << " — " << count << " orders\n";
+        std::cout << rank++ << ". " << name << " - " << count << " orders\n";
     }
     sqlite3_finalize(stmt);
 }

@@ -1,5 +1,7 @@
 #include "Order.h"
 #include "InputHelper.h"
+#include "ItemRepository.h"
+#include "CustomerRepository.h"
 
 int Order::getId() const {
     return m_id;
@@ -47,13 +49,48 @@ std::ostream& operator<< (std::ostream& out, const Order& order) {
     out << order.getId() << ": " << order.getCustomerId() << " | " << order.getItemId() << " | " << order.getQuantity() << " | " << order.getTotalPrice() << " | " << order.getStatus() << " | " << order.getOrderDate() << '\n';
     return out;
 }
-std::istream& operator>> (std::istream& in, Order& order) {
-    in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+std::istream& operator>>(std::istream& in, Order& order) {
     order.setCustomerId(getInput<int>("Enter customer ID: "));
     order.setItemId(getInput<int>("Enter item ID: "));
     order.setQuantity(getInput<int>("Enter quantity: "));
-    order.setTotalPrice(getInput<double>("Enter total price: "));
-    order.setStatus(getString("Enter status: "));
-    order.setOrderDate(getString("Enter order date: "));
+
+    ItemRepository itemRepo;
+    Item item = itemRepo.getById(order.getItemId());
+
+    if (item.getId() == 0) {
+        std::cerr << "Item not found!\n";
+        order.setCustomerId(0);
+        return in;
+    }
+
+    if (item.getStock() < order.getQuantity()) {
+        std::cerr << "Not enough stock! Available: " << item.getStock()
+            << ", Requested: " << order.getQuantity() << "\n";
+        order.setCustomerId(0);
+        return in;
+    }
+
+    double totalPrice = item.getPrice() * order.getQuantity();
+
+    CustomerRepository customerRepo;
+    Customer customer = customerRepo.getById(order.getCustomerId());
+
+    if (customer.getId() == 0) {
+        std::cerr << "Customer not found!\n";
+        order.setCustomerId(0);
+        return in;
+    }
+
+    if (customer.getGoldBalance() < totalPrice) {
+        std::cerr << "Not enough gold! Balance: " << customer.getGoldBalance()
+            << ", Required: " << totalPrice << "\n";
+        order.setCustomerId(0);
+        return in;
+    }
+
+    order.setTotalPrice(totalPrice);
+    std::cout << "Total price: " << totalPrice << " gold\n";
+    order.setStatus("pending");
+    order.setOrderDate(getString("Enter order date (dd mm yyyy): "));
     return in;
 }
